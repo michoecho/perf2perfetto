@@ -1,0 +1,18 @@
+[package]
+name = "perf2perfetto"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc = "0.2.121"
+num-traits = "0.2.14"
+lru = "0.7.3"
+strum = "0.24.0"
+strum_macros = "0.24.0"
+numtoa = "0.1.0"
+
+[lib]
+crate-type = ["dylib"]
+
+[build-dependencies]
+bindgen = "0.59.2"
