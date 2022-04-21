@@ -146,16 +146,17 @@ unsafe fn pop_unknown_frame(w: &mut dyn Write, c: &mut Caches, mode: TimestampMo
     let frame = tstate.stack.last().unwrap();
     let mut buffer = ['0' as u8; 20];
     let sym = resolve_ip(sample, ctx, &mut buffer[..]);
+    let ts = mode.choose(tstate.last_seen_time, tstate.cyc_cnt, tstate.insn_cnt);
     ftf::write_frame_full(
         w,
         c,
-        mode.choose(tstate.last_seen_time, tstate.cyc_cnt, tstate.insn_cnt),
+        ts,
         tstate.pid_tid,
         tstate.insn_cnt - frame.start_insn_cnt,
         tstate.cyc_cnt - frame.start_cyc_cnt,
         frame.footprint.len() as u64 * CACHE_LINE_SIZE,
         sym,
-        tstate.insn_cnt,
+        ts,
         frame.start_timestamp,
         sample.time,
     )
